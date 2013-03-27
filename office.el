@@ -1,37 +1,94 @@
-;; The raelly important keys are M-x ccur and M-x imenu and C-s foo then C-x C-x
+;; The really important keys are M-x ccur and M-x imenu and C-s foo then C-x C-x
+(server-start)
 (add-to-list 'load-path "C:/Users/Office/.emacs.d/matlab-emacs")
 (add-to-list 'load-path "c:/Users/Office/.emacs.d/elpa/smex-2.0/")
+(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc$" . php-mode))
 (load-library "matlab-load")
 (require 'smex)
 (smex-initialize)
-(global-set-key (kbd "<apps>") 'smex)
 (require 'python)
 (require 'igrep)
 (winner-mode 1)
+(column-number-mode 1)
 (kill-buffer "*scratch*")
-;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL
+(menu-bar-mode -1)
+(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
+(setq truncate-lines nil)
+(setq browse-url-mailto-function 'browse-url-generic)
+(setq browse-url-generic-program "open")
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;TO FIX
+(defun copy-lines-matching-re (re)
+  "find all lines matching the regexp RE in the current buffer
+putting the matching lines in a buffer named *matching*"
+  (interactive "sRegexp to match: ")
+  (let ((result-buffer (get-buffer-create "*matching*")))
+    (with-current-buffer result-buffer 
+      (erase-buffer))
+    (save-match-data 
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward re nil t)
+          (princ
+           (buffer-substring-no-properties
+            (line-beginning-position) 
+            (line-beginning-position 2))
+           result-buffer))))
+    (pop-to-buffer result-buffer)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL
+(defun key (desc)
+  (or (and window-system (read-kbd-macro desc))
+      (or (cdr (assoc desc real-keyboard-keys))
+          (read-kbd-macro desc))))
+
+(defconst real-keyboard-keys
+  '(("M-<up>"        . [27 up])
+    ("M-<down>"      . [27 down])
+    ("M-p"           . "p")
+    ("M-n"           . "n")
+    ("C-S-p"         . ""))
+  "An assoc list of pretty key strings                                                                                                                 
+and their terminal equivalents.")
+
+(global-set-key [f4] 'forward-paragraph)
+(global-set-key (key "C-]") 'enlarge-window)
+(global-set-key (kbd "<apps>") 'smex)
+(global-set-key [?\M-x] 'smex)
+(global-set-key [f12] 'select-next-window)
+(global-set-key (key "M-p") 'backward-paragraph)
+(global-set-key (key "M-n") 'forward-paragraph)
+(global-set-key (key "M-[") 'backward-sexp)
+(global-set-key (key "M-]") 'forward-sexp)
 (global-set-key [?\C-x ?\C-k] 'ido-kill-buffer)
 (global-set-key [?\C-=] 'text-scale-increase)
+(global-set-key [?\M-k] 'pop-tag-mark)
+(global-set-key (key "M-<up>") 'org-metaup)
+(global-set-key (key "M-<down>") 'org-metadown)
+
 (defadvice quit-window (before quit-window-always-kill)
   "When running `quit-window', always kill the buffer."
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
 
+(electric-pair-mode 1)
+(transient-mark-mode 1)
 (global-set-key [?\C-c ?l] 'org-store-link)
 (global-set-key [?\C-c ?c] 'org-capture)
 (global-set-key [?\C-c ?a] 'org-agenda)
 (global-set-key [?\C-c ?b] 'org-iswitchb)
-
-(electric-pair-mode 1)
 (global-set-key "" 'newline-and-indent)
-(global-set-key "
-" (quote newline-and-indent))
-(transient-mark-mode 1)
 (global-set-key [?\C-a] 'back-to-indentation)
 (global-set-key [f1] (quote call-last-kbd-macro))
 (global-set-key [home] 'back-to-indentation)
 (global-set-key [?\C-x ?9] 'close-and-kill-next-pane)
+
 (defun has-revisit-file-with-coding-windows-1252 ()
     "Re-opens currently visited file with the windows-1252 coding. (By: hassansrc at gmail dot com)
     Example: 
@@ -41,7 +98,6 @@
       consequence: the file is reopened with the windows-1252 coding with no other action on the part of the user. 
                    Hopefully, the accents are now shown properly.
                    Otherwise, find another coding...
-    
     "
         (interactive)
         (let ((coding-system-for-read 'windows-1252)
@@ -68,36 +124,30 @@
   (interactive)
   (select-window (previous-window)))
 
-(defun key (desc)
-  (or (and window-system (read-kbd-macro desc))
-      (or (cdr (assoc desc real-keyboard-keys))
-          (read-kbd-macro desc))))
-
-(defconst real-keyboard-keys
-  '(("M-<up>"        . [27 up])
-    ("M-<down>"      . [27 down])
-    ("M-p"           . "p")
-    ("M-n"           . "n"))
-  "An assoc list of pretty key strings                                                                                                                 
-and their terminal equivalents.")
-
-(global-set-key [f12] 'select-next-window)
-(global-set-key (key "M-p") 'backward-paragraph)
-(global-set-key (key "M-n") 'forward-paragraph)
 (defun show-file-name ()
   "Shows the full path file name in the minibuffer an dcopies it to kill-ring"
   (interactive)
   (message (concat "Copied path " (buffer-file-name) " to clipboard"))
   (kill-new (file-truename buffer-file-name))
 )
-(global-set-key [?\C-c ?\C-s ?\C-f] 'show-file-name)
 
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+(defun save-line-to-kill-ring ()
+  "Saves line (cursor to end) to kill ring (without killing)"
+  (interactive)
+  (progn
+    (kill-ring-save (point) (line-end-position))
+    (message (concat "copied: " (current-kill 0)))))
 
-(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
-(setq truncate-lines nil)
+(defun save-entire-line-to-kill-ring ()
+  "Save entire line to kill ring irrespective of cursor loc"
+  (interactive)
+  (progn
+    (kill-ring-save (line-beginning-position) (line-end-position))
+    (message (concat "copied: " (current-kill 0)))))
+
+(global-set-key [?\C-p] 'save-line-to-kill-ring)
+(global-set-key (key "C-S-p") 'save-entire-line-to-kill-ring)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TAGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defadvice find-tag (around refresh-etags activate)
@@ -120,15 +170,15 @@ If buffer is modified, ask about save before running etags."
 (let ((tags-revert-without-query t))  ; don't query, revert silently          
 (visit-tags-table default-directory nil)))
 (global-set-key [?\M-8] 'pop-tag-mark)
-;;;;;;;;;;;;;;;;;;;;;;; MATLAB
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;; MATLAB
 (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
 (add-to-list 'auto-mode-alist  '("\\.m$" . matlab-mode))
 (setq matlab-indent-function t)
 (setq matlab-shell-command "matlab")
 
-;;;;;;;;;;;;;;;;;;;;;; PYTHON
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;; PYTHON
 (defun py-execute-current-line ()
   "Execute the current line assuming it's python"
   (interactive)
@@ -141,7 +191,7 @@ If buffer is modified, ask about save before running etags."
   checking if unsaved buffers should be saved."
   (interactive)
   (let* ((file (buffer-file-name (current-buffer)))
-                 (command (concat "pychecker " file)))
+                 (command (concat "pychecker \"" file "\"")))
                  (save-some-buffers (not compilation-ask-about-save) nil) ; save  files.                                                               
                  (compile-internal command "No more errors or warnings" "pychecker"
                                                    nil pychecker-regexp-alist)))
@@ -153,8 +203,8 @@ If buffer is modified, ask about save before running etags."
 (add-hook 'python-mode-hook 'python-ka-hook)
 
  
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ORG
 
 (setq org-alphabetical-lists t
       org-startup-indented t
