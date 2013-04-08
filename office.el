@@ -14,7 +14,7 @@
 (column-number-mode 1)
 (kill-buffer "*scratch*")
 (menu-bar-mode -1)
-(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
+;;(eval-after-load "flyspell"  '(defun flyspell-mode (&optional arg))) ;;disable flyspell
 (setq truncate-lines nil)
 (setq browse-url-mailto-function 'browse-url-generic)
 (setq browse-url-generic-program "open")
@@ -23,7 +23,63 @@
         '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;TO FIX
+;;;;;;;;;;;;;;;;;;;;;;;;;;; AM ANNOTATE
+(setq shift-select-mode t)
+
+(defun surround-text-within-bounds (beg end)
+  "surround region between beg end"
+  (let ((tag (read-string "tag: ")))
+    (goto-char beg)
+    (insert (format "<%s corr=\"%s\">" tag (read-string "corr: ")))
+    (forward-char (- end beg))
+    (insert (format "</%s>" tag))))
+
+(defun surround-selected-text-with-tag ()
+  "surround selected region with tags if it is selected otherwise do nothing"
+  (interactive)
+  (if (use-region-p)
+      (surround-text-within-bounds (region-beginning) (region-end))))
+
+(add-to-list 'auto-mode-alist '("\\.tio$" . (lambda ()                                              
+                                              (flyspell-buffer)
+                                              (setq flyspell-issue-message-flag nil)
+                                              (setq case-fold-search nil)
+                                              (setq shift-select-mode t)
+;;                                               (insert "#Allowed values are MISSING, INCORRECT, INTERMEDIATE, CORRECT
+;; #SALUTATION: 
+;; #SUBJECT: 
+;; #CLOSING_GREETING: 
+;; #CLOSING_DESIGNATION: 
+;; ")
+                                              (sgml-mode))))
+
+;; (defun am-annotate-tag (&optional tag)
+;;   (interactive "SEnter tag: ")
+;;   (insert (format "<%s corr=\"\">" tag))
+;;   (left-char 2))
+
+(defun am-annotate-and-close-tag ()
+  (interactive)
+  (insert "<ms/>"))
+
+(add-hook 'sgml-mode                                      
+          (lambda ()
+            (progn
+              (setq flyspell-generic-check-word-predicate 'sgml-mode-flyspell-verify)
+              (setq flyspell-issue-message-flag nil)
+              (flyspell-mode 1)
+              (setq case-fold-search nil))))
+
+(eval-after-load "sgml-mode" '(progn
+                                (define-key sgml-mode-map (kbd "C-\\") 'sgml-close-tag)
+                                (define-key sgml-mode-map (kbd "<C-delete>") 'sgml-delete-tag)
+                                (define-key sgml-mode-map [?\C-v] 'sgml-validate)
+                                (define-key sgml-mode-map (kbd "C--") 'sgml-tags-invisible)
+                                (define-key sgml-mode-map (kbd "C-r") 'am-annotate-and-close-tag)
+                                (define-key sgml-mode-map [?\C-t] 'surround-selected-text-with-tag)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;TO STUDY
 (defun copy-lines-matching-re (re)
   "find all lines matching the regexp RE in the current buffer
 putting the matching lines in a buffer named *matching*"
@@ -41,6 +97,7 @@ putting the matching lines in a buffer named *matching*"
             (line-beginning-position 2))
            result-buffer))))
     (pop-to-buffer result-buffer)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL
 (defun key (desc)
@@ -108,6 +165,7 @@ and their terminal equivalents.")
           (find-alternate-file buffer-file-name)
           )
     )
+
 (defun close-and-kill-next-pane ()
   "Switch to next pane, close buffer, kill window"
   (interactive)
@@ -148,8 +206,8 @@ and their terminal equivalents.")
 (global-set-key [?\C-p] 'save-line-to-kill-ring)
 (global-set-key (key "C-S-p") 'save-entire-line-to-kill-ring)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TAGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TAGS
 (defadvice find-tag (around refresh-etags activate)
 "Rerun etags and reload tags if tag not found and redo find-tag.
 If buffer is modified, ask about save before running etags."
@@ -170,6 +228,7 @@ If buffer is modified, ask about save before running etags."
 (let ((tags-revert-without-query t))  ; don't query, revert silently          
 (visit-tags-table default-directory nil)))
 (global-set-key [?\M-8] 'pop-tag-mark)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;; MATLAB
 (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
@@ -195,12 +254,10 @@ If buffer is modified, ask about save before running etags."
                  (save-some-buffers (not compilation-ask-about-save) nil) ; save  files.                                                               
                  (compile-internal command "No more errors or warnings" "pychecker"
                                                    nil pychecker-regexp-alist)))
-(defun python-ka-hook ()
-  ""
-  (progn
-  (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
-  (global-set-key [?\C-r] 'py-execute-current-line)))
-(add-hook 'python-mode-hook 'python-ka-hook)
+
+(add-hook 'python-mode-hook (lambda ()
+                              (setq pychecker-regexp-alist '(("\\([a-zA-Z]?:?[^:(\t\n]+\\)[:( \t]+\\([0-9]+\\)[:) \t]" 1 2)))
+                              (define-key python-mode-map [?\C-r] 'py-execute-current-line)))
 
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
