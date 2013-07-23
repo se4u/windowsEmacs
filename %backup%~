@@ -1,4 +1,347 @@
-To:chief manager officer
-Subject:to convince chief manager officer for selling the product in superbajar
-Email Body:hello sir,
-i am the employee of your compny.i want to request to use th product of superbajar.I think it is a best deal for our compny.We should try to take this risk.
+import sys, math, time
+from numpy import mean, std
+from collections import namedtuple
+
+
+def make_it_global(f):
+    """make any named function global
+    """
+    sys.modules['__builtin__'].__dict__[f.__name__]=f
+    return f
+
+make_it_global=make_it_global(make_it_global)
+
+class Show_Time(object):
+    def __str__(self):
+        return time.strftime("%d_%H:%M:%S", time.localtime())+">>> "
+
+sys.path.append("")
+sys.ps1=Show_Time()
+
+@make_it_global
+def find_overlapped_pairs(tags):
+    """Find those pairs of elements in an array which are sub-sequences of each other"""
+    retval=[]
+    for i in tags:
+        for j in tags:
+            if i!=j and i in j:
+                retval.append((i,j))
+    return retval
+
+@make_it_global
+def flatten_one_level(arr):
+    """Flatten a nested list by one level
+    """
+    return reduce(lambda x,y: x+y, arr, [])
+
+@make_it_global
+def unique(items):
+    found = set([])
+    keep = []
+    for item in items:
+        if item not in found:
+            found.add(item)
+            keep.append(item)
+    return keep
+
+mean=make_it_global(mean)
+std=make_it_global(std)
+
+@make_it_global
+def keep_these_indices(arr, indices):
+    """Returns a generator that keeps values at indices provided in arr
+    """
+    return (e for i,e in enumerate(arr) if i in indices)
+
+@make_it_global
+def keep_by_index(seq, n):
+    """return a seq after extracting the nth element from a sequence of tuples
+    """
+    return (e[n] for e in seq)
+
+@make_it_global
+def keep_by_key(arr, key):
+    """In a array of dictinaries return generator with just these values
+    """
+    return (e[key] for e in arr)
+
+@make_it_global
+def length_is_same(*args):
+    """Check that the length of all list items is the same
+    """
+    assert len(args)>1, "Are you sure you really want to pass one element? maybe you should pass *list instead"
+    benchmark_length=len(args[0])
+    return all(len(e)==benchmark_length for e in args)
+
+@make_it_global
+class Infix:
+    """A class to prepare an inline operator, It is used as follows
+    Suppose that you hae to concatenate two value together but they might occsaionally be None
+    Then make an operator like this
+    >>> add=Infix(lambda x,y: (x if x is not None else "") + (y if y is not None else ""))
+    >>> assert (None |add| None) == ""
+    """
+    def __init__(self, function):
+        self.function = function
+    def __ror__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+    def __or__(self, other):
+        return self.function(other)
+    def __rlshift__(self, other):
+        return Infix(lambda x, self=self, other=other: self.function(other, x))
+    def __rshift__(self, other):
+        return self.function(other)
+    def __call__(self, value1, value2):
+        return self.function(value1, value2)
+
+@make_it_global
+def compare_freqdists(*dists):
+    assert len(dists)>1, "You have passed only 1 distribution, maybe you want to pass *input"
+    bins=set(dists[0].keys())
+    for dist in dists:
+        bins=bins.intersection(set(dist.keys()))
+    assert len(bins)>0, "The frequency distribution don't have any valid overlapping bins"
+    bin_mean_freq=[(_bin, mean(list(e.freq(_bin) for e in dists))) for _bin in bins]
+    bin_mean_freq.sort(key=lambda x: x[1], reverse=True)
+    bin_freq=namedtuple('bin_freq', " ".join(e[0] for e in bin_mean_freq))
+    ret=[]
+    ret.append(bin_freq(*[e[0] for e in bin_mean_freq]))
+    for dist in dists:
+        ret.append(bin_freq(*[dist.freq(e[0]) for e in bin_mean_freq]))
+    return ret
+
+base_modules=sys.modules.keys()
+@make_it_global
+def unload():
+    """This unloads all modules that are not in base module
+    """
+    loaded_modules=sys.modules.keys()
+    [sys.modules.pop(e, None) for e in loaded_modules if e not in base_modules]
+    return
+
+@make_it_global
+def retry(tries, delay=3, backoff=2):
+    '''Retries a function or method until it returns True.
+    delay sets the initial delay in seconds, and backoff sets the factor by which
+    the delay should lengthen after each failure. backoff must be greater than 1,
+    or else it isn't really a backoff. tries must be at least 0, and delay
+    greater than 0.
+    '''
+    if backoff <= 1:
+        raise ValueError("backoff must be greater than 1")
+
+    tries = math.floor(tries)
+    if tries < 0:
+        raise ValueError("tries must be 0 or greater")
+
+    if delay <= 0:
+        raise ValueError("delay must be greater than 0")
+
+    def deco_retry(f):
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay # make mutable
+
+            rv = f(*args, **kwargs) # first attempt
+            while mtries > 0:
+                if rv is True: # Done on success
+                    return True
+
+            mtries -= 1      # consume an attempt
+            time.sleep(mdelay) # wait...
+            mdelay *= backoff  # make future wait longer
+            rv = f(*args, **kwargs) # Try again
+            return False # Ran out of tries :-(
+        
+        return f_retry # true decorator -> decorated function
+    
+    return deco_retry  # @retry(arg[, ...]) -> true decorator
+
+
+@make_it_global
+class Count_Calls(object):
+   "Decorator that keeps track of the number of times a function is called."
+
+   __instances = {}
+
+   def __init__(self, f):
+      self.__f = f
+      self.__numcalls = 0
+      Count_Calls.__instances[f] = self
+
+   def __call__(self, *args, **kwargs):
+      self.__numcalls += 1
+      return self.__f(*args, **kwargs)
+
+   @staticmethod
+   def count(f):
+      "Return the number of times the function f was called."
+      return Count_Calls.__instances[f].__numcalls
+
+   @staticmethod
+   def counts():
+      "Return a dict of {function: # of calls} for all registered functions."
+      return dict([(f, Count_Calls.count(f)) for f in Count_Calls.__instances])
+
+@make_it_global
+def singleton(cls):
+    instance = cls()
+    instance.__call__ = lambda: instance
+    return instance
+
+@make_it_global
+def print_input(f):
+    def wrapper(*args):
+        print args
+        return f(*args)
+    return wrapper
+
+class a(object):
+    """ simple code to understand init, new, call and get
+    >>> b=a()
+    __new__
+    __init__
+    >>> b()
+    __call__
+    >>> class c(object):
+    ...     a=a()
+    ... 
+    __new__
+    __init__
+    >>> c.a
+    __get__ None <class '__main__.c'>
+    1
+    >>> d=c()
+    >>> d.a=2
+    __set__
+    >>> d.__dict__['a']=3
+    >>> d.a=4
+    __set__
+
+    data descriptors have priority over instance variables which
+    have priority over non-data descriptors
+    non-data descriptors are descriptors with only __get__ method.
+    but descriptors need to be class variables not instance variables, because
+    we are doing the lookup type(b).__dict__['x'].__get__(b, type(b))
+    """
+    def __init__(self):
+        print "__init__"
+    def __call__(self):
+        print "__call__"
+    def __new__(self):
+        print "__new__"
+        return super(a, self).__new__(self)
+    def __get__(self, obj, objtype):
+        print "__get__", str(obj), str(objtype)
+        return 1
+    def __set__(self, obj, value):
+        print "__set__"
+        return
+
+
+@singleton
+class PB_Registry(object):
+    """Create a singleton registry of all targets.
+    >>> registry=PB_Registry()
+    >>> assert PB_Registry() is registry
+    >>> registry.register("test")
+    >>> assert registry.get_all_dependencies().keys()==["test"]
+    """
+    def __init__(self):
+        self.__registry={}
+        
+    def register(self, target):
+        self.__registry[str(target)]=target
+
+    def deregister(self, target):
+        del self.__registry[str(target)]
+
+    def get_all_dependencies(self):
+        return self.__registry        
+
+    def get_dependency(self, dependency_name):
+        if dependency_name in self.__registry:
+            return self.__registry[dependency_name]
+        # elif os.path.isfile(dependency_name):
+        #     PB_Target(dependency_name, PB_Rule(rule from file , null, ), need_to_build=False)
+        else:
+            raise RuntimeError("Can't find dependency:%s"%dependency_name)
+
+# class test_pb_registry(object):
+#     def __init__(self, targets, dependencies):
+#         for target in targets:
+#             PB_Registry().register(
+#                 PB_Target(
+#                     target,
+#                     PB_Rule(
+#                         target,
+#                         dependency,
+#                         ),
+#                     )
+#                 )
+            
+# class PB_Target(object):
+#     """A target is basically a name and its rule.
+#     It has one method to update it called, update
+#     And one attribute to check whether it is uptodate called, uptodate
+#     """
+#     def __init__(self, name, rule,\
+#                  always_rebuild=False,\
+#                  always_ask_user=False,\
+#                  need_to_build=True):
+#         self.name=name
+#         self.rule=rule
+#         self.always_rebuild=always_rebuild
+#         self.always_ask_user=always_ask_user
+        
+#     def __str__(self):
+#         return self.name
+
+#     @property
+#     def uptodate(self):
+#         if self.always_rebuild:
+#             return False
+#         if self.always_ask_user:
+#             raise NotImplementedError("This feature has not yet been implemented")
+#         if not self.need_to_build
+#         return not rule.need_to_execute
+        
+#     def update(self):
+#         if not self.uptodate:
+#             return self.rule.execute()
+#         return True
+
+
+# class PB_Rule(object):
+#     """This class is the main workhorse
+#     If all dependencies are older than target and target exists and not force_rebuild then
+#     """
+#     def __init__(self, targets, dependencies):
+#         #register the target, 
+#         pass
+#     def execute(self):
+#         pass
+    
+#     def need_to_execute(self):
+#         #If there are not dependency
+#         #else if there are dependency but the dependency are not uptodate.
+#         #The dependencies are uptodate but the target is not.
+
+# class pbuilder(object):
+#     """At compile time what can I do
+#     """
+#     self._flags=["pb:always_rebuild", "pb:dont_rebuild_if_target_exists", "pb:always_ask_user"]
+    
+#     def __init__(self, targets, dependencies):
+#         self.targets=targets
+#         self.dependencies=dependencies
+        
+#     def __call__(self, f):
+#         self.flags=[e1 for e1 in (e.strip() for e in f.__doc__.split("\n")) if e1 in self._flags]
+#         #Instantiate the target
+        
+#         #Instantiate the rule
+        
+#         def wrapper(*args):
+#              return f(*args)
+#         return wrapper
+            

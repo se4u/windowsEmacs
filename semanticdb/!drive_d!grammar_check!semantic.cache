@@ -1,0 +1,218 @@
+;; Object grammar_check/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "grammar_check/"
+  :tables (list 
+   (semanticdb-table "lib_corpus.py"
+    :major-mode 'python-mode
+    :tags 
+        '( ("lxml" include nil nil [42 64])
+            ("collections" include nil nil [65 100])
+            ("itertools" include nil nil [101 117])
+            ("nltk.tokenize.punkt" include nil nil [138 209])
+            ("nltk" include nil nil [210 235])
+            ("os" include nil nil [236 245])
+            ("path" include nil nil [246 267])
+            ("random" include nil nil [268 281])
+            ("re" include nil nil [282 291])
+            ("sgml_well_formedness_checker" include nil nil [292 361])
+            ("StringIO" include nil nil [362 391])
+            ("sys" include nil nil [392 402])
+            ("parser" variable nil nil [403 441])
+            ("print" code nil nil [442 453])
+            ("pprint" include nil nil [454 479])
+            ("Learner_Corpus" type
+               (:superclasses ("object")
+                :members 
+                  ( (""""A corpus is a list of dictionaries, which is uniquely identified by its tag.
+    Every dict has keys:
+    sentence_id - A string of the form <tio_name>.<corpus_tag>.<g|u>.<sibling_id>.<unique_id>
+        # sibling_id is unique number that is same for grammatical ungrammatical pair of sentences
+        #unique_id makes the sentence_id unique for a sentence
+    tags - tags are desciptors of what kind of error this sentence has
+    is_grammatical - binary indicator Yes means sentence is grammatical
+    ----
+    It defines two methods for creation of this representation, in memory and on file.
+    Also, it (weakly)enforces that all the corpuses are subdirectories of BASE_DIR_PATH.
+    NOTHING ELSE, This wont create parse trees. 
+    """" code nil (reparse-symbol indented_block_body) [515 1260])
+                    ("BASE_DIR_PATH" variable nil (reparse-symbol indented_block_body) [1265 1311])
+                    ("corpus" variable nil (reparse-symbol indented_block_body) [1316 1327])
+                    ("corpus_tag" variable nil (reparse-symbol indented_block_body) [1332 1347])
+                    ("corpus_path" variable nil (reparse-symbol indented_block_body) [1352 1368])
+                    ("sentence_file_path" variable nil (reparse-symbol indented_block_body) [1373 1396])
+                    ("tags_file_path" variable nil (reparse-symbol indented_block_body) [1401 1420])
+                    ("get_corpus" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [1445 1449]))                      ) (reparse-symbol indented_block_body) [1430 1985])
+                    ("write_sentences_and_tags_to_file" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [2027 2031]))                      ) (reparse-symbol indented_block_body) [1990 2623])
+                    ("additional_stats" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [2649 2653]))                      ) (reparse-symbol indented_block_body) [2628 2773])
+                    ("staticmethod" code nil (reparse-symbol indented_block_body) [2784 2796])
+                    ("get_sentence_id" function (:arguments 
+                      ( ("tio_name" variable nil (reparse-symbol function_parameters) [2821 2829])
+                        ("corpus_tag" variable nil (reparse-symbol function_parameters) [2831 2841])
+                        ("is_grammatical" variable nil (reparse-symbol function_parameters) [2843 2857])
+                        ("sibling_id" variable nil (reparse-symbol function_parameters) [2859 2869])
+                        ("unique_id" variable nil (reparse-symbol function_parameters) [2871 2880]))                      ) (reparse-symbol indented_block_body) [2801 2996])
+                    ("staticmethod" code nil (reparse-symbol indented_block_body) [3002 3014])
+                    ("decompose_sentence_id" function (:arguments 
+                      ( ("sentence_id" variable nil (reparse-symbol function_parameters) [3045 3056]))                      ) (reparse-symbol indented_block_body) [3019 3384])
+                    ("_get_sibling" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [3410 3414])
+                        ("sentence_id" variable nil (reparse-symbol function_parameters) [3416 3427])
+                        ("sibling_id" variable nil (reparse-symbol function_parameters) [3429 3439])
+                        ("tio_name" variable nil (reparse-symbol function_parameters) [3441 3449]))                      ) (reparse-symbol indented_block_body) [3393 3721])
+                    ("get_sibling_from_corpus_row" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [3758 3762])
+                        ("e" variable nil (reparse-symbol function_parameters) [3764 3765]))                      ) (reparse-symbol indented_block_body) [3726 3850])
+                    ("stats" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [3865 3869]))                      ) (reparse-symbol indented_block_body) [3855 5057]))                  
+                :type "class")
+                nil [481 5057])
+            ("JLEPainful" type
+               (:superclasses ("Learner_Corpus")
+                :members 
+                  ( (""""This corpus tries to imitate the Painful corpus by selectively using sentences from JLE corpus
+    """" code nil (reparse-symbol indented_block_body) [5096 5201])
+                    ("corpus_path" variable nil (reparse-symbol indented_block_body) [5206 5275])
+                    ("staticmethod" code nil (reparse-symbol indented_block_body) [5281 5293])
+                    ("pdf_dist_metric" function (:arguments 
+                      ( ("imitated_dist" variable nil (reparse-symbol function_parameters) [5318 5331])
+                        ("dist_to_imitate" variable nil (reparse-symbol function_parameters) [5333 5348]))                      ) (reparse-symbol indented_block_body) [5298 5845])
+                    ("__init__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [5867 5871])
+                        ("number_of_jle" variable nil (reparse-symbol function_parameters) [5890 5903])
+                        ("number_of_painful" variable nil (reparse-symbol function_parameters) [5922 5939])
+                        ("tag_buffer_factor" variable nil (reparse-symbol function_parameters) [5958 5975])
+                        ("threshold" variable nil (reparse-symbol function_parameters) [5994 6003])
+                        ("bump" variable nil (reparse-symbol function_parameters) [6022 6026])
+                        ("dist_to_imitate" variable nil (reparse-symbol function_parameters) [6049 6064]))                      ) (reparse-symbol indented_block_body) [5854 8185]))                  
+                :type "class")
+                nil [5058 8185])
+            ("JleNumber" type
+               (:superclasses ("Learner_Corpus")
+                :members 
+                  ( ("corpus_path" variable nil (reparse-symbol indented_block_body) [8223 8299])
+                    ("__init__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [8321 8325])
+                        ("number" variable nil (reparse-symbol function_parameters) [8327 8333]))                      ) (reparse-symbol indented_block_body) [8308 8647])
+                    ("get_corpus" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [8667 8671])
+                        ("number" variable nil (reparse-symbol function_parameters) [8673 8679]))                      ) (reparse-symbol indented_block_body) [8652 11082]))                  
+                :type "class")
+                nil [8186 11082])
+            ("JlePercentage" type
+               (:superclasses ("JleNumber")
+                :members 
+                  ( ("__init__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [11145 11149])
+                        ("percentage" variable nil (reparse-symbol function_parameters) [11151 11161]))                      ) (reparse-symbol indented_block_body) [11132 11513]))                  
+                :type "class")
+                nil [11096 11513])
+            ("Annotated_AM_Email_Corpus" type
+               (:superclasses ("Learner_Corpus")
+                :members 
+                  ( (""""The aspiring minds email corpus that was collected over 15-20 days.
+    This contains responses of 200 students over 3 different questions in the distribution 100, 50, 50
+    >>> a=Annotated_AM_Email_Corpus()
+    >>> corpus=a.corpus
+    """" code nil (reparse-symbol indented_block_body) [14130 14373])
+                    ("_STARTING_CHARACTER" variable nil (reparse-symbol indented_block_body) [14378 14401])
+                    ("_QUESTION_PREAMBLE" variable nil (reparse-symbol indented_block_body) [14411 15430])
+                    ("_TAGS_NON_GRAMMATICAL" variable nil (reparse-symbol indented_block_body) [15436 15950])
+                    ("_TAGS_FIXED_FOR_CREATING_NON_GRAMMATICAL_STRINGS" variable nil (reparse-symbol indented_block_body) [15960 16136])
+                    ("_TAGS_CORR_FREE" variable nil (reparse-symbol indented_block_body) [16146 16287])
+                    ("corpus_tag" variable nil (reparse-symbol indented_block_body) [16297 16317])
+                    ("corpus_path" variable nil (reparse-symbol indented_block_body) [16327 16421])
+                    ("sentence_file_path" variable nil (reparse-symbol indented_block_body) [16426 16492])
+                    ("tags_file_path" variable nil (reparse-symbol indented_block_body) [16497 16554])
+                    ("__init__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [16577 16581]))                      ) (reparse-symbol indented_block_body) [16564 18310])
+                    ("_get_all_occurences_of_all_tags" function (:arguments 
+                      ( ("text" variable nil (reparse-symbol function_parameters) [18363 18367]))                      ) (reparse-symbol indented_block_body) [18327 18626])
+                    ("_get_all_occurences_of_tag" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [18662 18666])
+                        ("tag" variable nil (reparse-symbol function_parameters) [18668 18671])
+                        ("text" variable nil (reparse-symbol function_parameters) [18673 18677]))                      ) (reparse-symbol indented_block_body) [18631 18894])
+                    ("_remove_non_grammar_related_tags" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [18936 18940])
+                        ("sgml" variable nil (reparse-symbol function_parameters) [18942 18946]))                      ) (reparse-symbol indented_block_body) [18899 19213])
+                    ("_get_grammatical_version" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [19247 19251])
+                        ("sgml" variable nil (reparse-symbol function_parameters) [19253 19257])
+                        ("max_depth" variable nil (reparse-symbol function_parameters) [19259 19268]))                      ) (reparse-symbol indented_block_body) [19218 19922])
+                    ("_get_ungrammatical_version" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [19958 19962])
+                        ("sgml" variable nil (reparse-symbol function_parameters) [19964 19968])
+                        ("max_depth" variable nil (reparse-symbol function_parameters) [19970 19979]))                      ) (reparse-symbol indented_block_body) [19927 21058])
+                    ("_get_grammatical_ungrammatical_version" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [21106 21110])
+                        ("sgml" variable nil (reparse-symbol function_parameters) [21112 21116])
+                        ("max_depth" variable nil (reparse-symbol function_parameters) [21118 21127]))                      ) (reparse-symbol indented_block_body) [21063 21301])
+                    ("_sentence_tokenizer" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [21330 21334])
+                        ("text" variable nil (reparse-symbol function_parameters) [21336 21340]))                      ) (reparse-symbol indented_block_body) [21306 21701])
+                    ("_get_corpus_per_tio" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [21736 21740])
+                        ("tio_name" variable nil (reparse-symbol function_parameters) [21742 21750])
+                        ("sgml" variable nil (reparse-symbol function_parameters) [21752 21756])
+                        ("preamble" variable nil (reparse-symbol function_parameters) [21758 21766])
+                        ("max_depth" variable nil (reparse-symbol function_parameters) [21768 21777])
+                        ("kwargs" variable nil (reparse-symbol function_parameters) [21779 21787]))                      ) (reparse-symbol indented_block_body) [21712 24313])
+                    ("_get_corpus" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [24338 24342]))                      ) (reparse-symbol indented_block_body) [24322 24428])
+                    ("_diagnosis_get_set_of_all_tags_in_corpus" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [24482 24486]))                      ) (reparse-symbol indented_block_body) [24437 24618])
+                    ("_diagnosis_get_corpus_by_tio_name" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [24661 24665])
+                        ("tio_name" variable nil (reparse-symbol function_parameters) [24667 24675]))                      ) (reparse-symbol indented_block_body) [24623 24814]))                  
+                :type "class")
+                nil [14077 24814]))          
+    :file "lib_corpus.py"
+    :pointmax 30354
+    :fsize 30952
+    :lastmodtime '(20871 40194)
+    :unmatched-syntax '((INDENT_BLOCK 17889 . 17992) (NEWLINE 17888 . 17889) (COLON 17887 . 17888) (TRY 17758 . 17761) (AS 17883 . 17885) (punctuation 5280 . 5281) (punctuation 3001 . 3002) (punctuation 2783 . 2784))
+    )
+   (semanticdb-table "sgml_well_formedness_checker.py"
+    :major-mode 'python-mode
+    :tags 
+        '( ("sgmllib" include nil nil [1 15])
+            ("SGML_Well_Formedness_Checker" type
+               (:superclasses ("sgmllib.SGMLParser")
+                :members 
+                  ( (""""A basic check that the sgml string is valid.
+    Also, this object contains three useful attributes after initialization:
+    all_tags: All tags encountered in the string
+    max_depth: The maximum depth of the parse tree that was encountered
+    max_tags: Tags in the maximum depth branch.
+    To use this please initialize it and access the attributes and call close
+    It raises RuntimeError 
+    """" code nil (reparse-symbol indented_block_body) [77 484])
+                    ("__init__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [502 506]))                      ) (reparse-symbol indented_block_body) [489 830])
+                    ("close" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [845 849]))                      ) (reparse-symbol indented_block_body) [835 1105])
+                    ("unknown_starttag" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [1135 1139])
+                        ("start" variable nil (reparse-symbol function_parameters) [1141 1146])
+                        ("attrs" variable nil (reparse-symbol function_parameters) [1148 1153]))                      ) (reparse-symbol indented_block_body) [1114 1224])
+                    ("unknown_endtag" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [1248 1252])
+                        ("end" variable nil (reparse-symbol function_parameters) [1254 1257]))                      ) (reparse-symbol indented_block_body) [1229 1657])
+                    ("check" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [1672 1676])
+                        ("data" variable nil (reparse-symbol function_parameters) [1678 1682]))                      ) (reparse-symbol indented_block_body) [1662 1872]))                  
+                :type "class")
+                nil [17 1872]))          
+    :file "sgml_well_formedness_checker.py"
+    :pointmax 1872
+    :fsize 1921
+    :lastmodtime '(20870 3745)
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "!drive_d!grammar_check!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.0"
+  )

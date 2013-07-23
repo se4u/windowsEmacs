@@ -1,0 +1,54 @@
+;; Object pushpendre_python_module/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "pushpendre_python_module/"
+  :tables (list 
+   (semanticdb-table "__init__.py"
+    :major-mode 'python-mode
+    :tags nil
+    :file "__init__.py"
+    :pointmax 1
+    :fsize 0
+    :lastmodtime '(20868 46408)
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "ppm.py"
+    :major-mode 'python-mode
+    :tags 
+        '( ("sys" include nil nil [1 18])
+            ("ShowTime" type
+               (:superclasses ("object")
+                :members 
+                  ( ("__str__" function (:arguments 
+                      ( ("self" variable nil (reparse-symbol function_parameters) [60 64]))                      ) (reparse-symbol indented_block_body) [48 156]))                  
+                :type "class")
+                nil [20 156])
+            ("sys" code nil nil [157 176])
+            ("sys" variable nil nil [177 195])
+            ("find_overlapped_pairs" function (:arguments 
+              ( ("tags" variable nil (reparse-symbol function_parameters) [223 227]))              ) nil [197 462])
+            ("flatten_one_level" function (:arguments 
+              ( ("arr" variable nil (reparse-symbol function_parameters) [485 488]))              ) nil [463 581])
+            ("make_func_global" function (:arguments 
+              ( ("f" variable nil (reparse-symbol function_parameters) [603 604]))              ) nil [582 707])
+            ("keep_nth_element" function (:arguments 
+              ( ("seq" variable nil (reparse-symbol function_parameters) [729 732])
+                ("n" variable nil (reparse-symbol function_parameters) [734 735]))              ) nil [708 856])
+            ("unique" function (:arguments 
+              ( ("items" variable nil (reparse-symbol function_parameters) [868 873]))              ) nil [857 1037])
+            ("mean" variable nil nil [1038 1053])
+            ("std" variable nil nil [1054 1067])
+            ("keep_by_index" function (:arguments 
+              ( ("arr" variable nil (reparse-symbol function_parameters) [1087 1090])
+                ("indices" variable nil (reparse-symbol function_parameters) [1092 1099]))              ) nil [1069 1239])
+            ("for" code nil nil [1240 1398]))          
+    :file "ppm.py"
+    :pointmax 1398
+    :fsize 1451
+    :lastmodtime '(20871 32075)
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "!drive_c!Users!Office!Dropbox!pushpendre_python_module!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.0"
+  )

@@ -1,0 +1,18 @@
+;; Object annotated_am_email_corpus/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "annotated_am_email_corpus/"
+  :tables (list 
+   (semanticdb-table "annotated_am_email_corpus.py"
+    :major-mode 'python-mode
+    :tags nil
+    :file "annotated_am_email_corpus.py"
+    :pointmax 17017
+    :fsize 17320
+    :lastmodtime '(20871 40532)
+    :unmatched-syntax 'nil
+    )
+    )
+  :file "!drive_d!bllip-parser-master!annotated_tios!annotated_am_email_corpus!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.0"
+  )

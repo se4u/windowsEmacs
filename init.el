@@ -13,3 +13,4 @@
 (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))
 
 ;;; init.el ends here
+(put 'scroll-left 'disabled nil)

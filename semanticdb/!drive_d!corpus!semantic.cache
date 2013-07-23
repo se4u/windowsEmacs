@@ -1,0 +1,31 @@
+;; Object corpus/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "corpus/"
+  :tables (list 
+   (semanticdb-table "how_to_use_the_corpuses.py"
+    :major-mode 'python-mode
+    :tags 
+        '( ("lxml" include nil nil [1 23])
+            ("StringIO" include nil nil [24 53])
+            ("re" include nil nil [55 64])
+            ("cPickle" include nil nil [65 65])
+            ("path" include nil nil [65 65])
+            ("parser" variable nil nil [65 103])
+            ("basedir" variable nil nil [1811 1900])
+            ("get_error_tags_from_jle_corpus" function (:arguments 
+              ( ("sentence_sgmls" variable nil (reparse-symbol function_parameters) [6403 6417]))              ) nil [6368 6585])
+            ("get_correct_incorrect_and_sgml_from_jle_corpus_by_index" function (:arguments 
+              ( ("indices" variable nil (reparse-symbol function_parameters) [6646 6653]))              ) nil [6586 8094])
+            ("get_error_tags_for_am_error_corpus" function (:arguments 
+              ( ("build_final_output_also" variable nil (reparse-symbol function_parameters) [8279 8302]))              ) nil [8240 9440]))          
+    :file "how_to_use_the_corpuses.py"
+    :pointmax 9440
+    :fsize 9648
+    :lastmodtime '(20871 41788)
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "!drive_d!corpus!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.0"
+  )

@@ -1,0 +1,37 @@
+;; Object annotated_tios/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "annotated_tios/"
+  :tables (list 
+   (semanticdb-table "tio_reader_concordance.py"
+    :major-mode 'python-mode
+    :tags 
+        '( ("nltk.corpus.reader" include nil nil [1 58])
+            ("nltk.text" include nil nil [59 100])
+            ("os" include nil nil [101 110])
+            ("numpy" include nil nil [111 129])
+            ("re" include nil nil [130 139])
+            ("pprint" include nil nil [140 170])
+            ("path" variable nil nil [311 365])
+            ("tc" variable nil nil [366 401])
+            ("c" variable nil nil [402 433])
+            ("tc" code nil nil [434 474])
+            ("s" variable nil nil [533 596])
+            ("s" variable nil nil [597 665])
+            ("print" code nil nil [667 688])
+            ("fileid" variable nil nil [771 926])
+            ("p" code nil nil [927 949])
+            ("temp" variable nil nil [1458 1472])
+            ("tags" variable nil nil [1473 1530])
+            ("print" code nil nil [1531 1562])
+            ("print" code nil nil [1563 1578]))          
+    :file "tio_reader_concordance.py"
+    :pointmax 1579
+    :fsize 1617
+    :lastmodtime '(20838 38165)
+    :unmatched-syntax '((INDENT_BLOCK 509 . 532) (DEF 478 . 481) (NAME 491 . 494) (NAME 495 . 496) (NAME 497 . 504) (COLON 507 . 508))
+    )
+   )
+  :file "!drive_d!bllip-parser-master!annotated_tios!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.0"
+  )
