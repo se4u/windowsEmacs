@@ -13,6 +13,7 @@
 (smex-initialize)
 (require 'python)
 (require 'igrep)
+(require 'multi-web-mode)
 (winner-mode 1)
 (column-number-mode 1)
 (kill-buffer "*scratch*")
@@ -33,6 +34,16 @@
          "* TODO %?\n %i\n")
         ("l" "Link" plain (file (concat org-directory "/links.org"))
          "- %?\n %x\n")))
+
+(setq mweb-default-major-mode 'html-mode)
+(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+                  (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+(multi-web-global-mode 1)
+
+;; Make hidden Info text visible.
+(set-variable 'Info-hide-note-references nil nil)
 
 (defun save-and-kill-this-buffer ()
   "Saves and kills buffer without asking for confirmation"
@@ -210,6 +221,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;TO STUDY
+
 (defun copy-lines-matching-re (re)
   "find all lines matching the regexp RE in the current buffer
 putting the matching lines in a buffer named *matching*"
